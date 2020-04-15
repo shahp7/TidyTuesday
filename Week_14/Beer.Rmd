@@ -1,0 +1,96 @@
+---
+title: "Beer"
+author: "Poonam Shah"
+date: "4/5/2020"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggridges)
+ 
+```
+
+
+```{r }
+# Get the Data
+
+beer_states <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-31/beer_states.csv')
+
+```
+
+
+```{r }
+
+beer_states %>%
+#filtering be east coast states
+filter(state %in% c("VT", "RI","ME","NH","CT","MA","NJ","PA","NJ")) %>%
+  #only looking at bottles and cans
+  filter(type=="Bottles and Cans") %>%
+arrange()->BC_beer_state
+  
+
+```
+
+
+```{r }
+
+BC_beer_state %>%
+  
+ggplot(aes(x=barrels,y=state, fill=state)) +
+#the density ridges plot
+geom_density_ridges_gradient(alpha = 0.7, scale = 0.9 ) +
+scale_fill_brewer(palette = "Set3")+
+#fixing the x axis
+scale_x_continuous(labels = scales::comma)+
+labs(x="Number of Barrels", 
+     y="States", 
+     title = "Northeast state based on Bottles and Cans")+
+theme(legend.position = "none")+
+theme_ridges()->BC_beer_plot
+
+print(BC_beer_plot)
+
+
+ggsave("BC_beer_plot.png", BC_beer_plot)
+
+```
+
+```{r }
+
+beer_states %>%
+#filtering be east coast states
+filter(state %in% c("VT", "RI","ME","NH","CT","MA","NJ","PA","NJ")) %>%
+  #filter for Kegs and Barrels
+  filter(type=="Kegs and Barrels") %>%
+arrange()->KB_beer_state
+  
+
+```
+
+```{r}
+KB_beer_state %>%
+ggplot(aes(x=barrels,y=state, fill=state)) +
+#the density ridges plot
+geom_density_ridges_gradient(alpha = 0.7, scale = 0.9 ) +
+scale_fill_brewer(palette = "Set3")+
+#fixing the x axis
+scale_x_continuous(labels = scales::comma)+
+labs(x="Number of Barrels", 
+     y="States", 
+     title = "Northeast state based on Kegs and Barrels")+
+theme_ridges()-> KB_beer_plot
+
+print(KB_beer_plot)
+
+
+ggsave("KB_beer_plot.png", KB_beer_plot)
+```
+
+
+
+
+In this TidyTuesday I wanted to play around with ridgeline plot. In the process of making the ridgeline plot does not give out a lot of information in compared to the histogram. Its a cool way to look at the data. It is hard to read. In the future it will be better to use the ridgeline plot with categorical on th y-axis, and not a too big of a numeric value for the x-axis. 
