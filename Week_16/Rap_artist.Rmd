@@ -47,4 +47,29 @@ print(top_20_plot)
 ggsave("top_20_plot.png", top_20_plot)
 ```
 
-This week tidy tuesday is working with the data set of the Best Rap artist. It was not my favotite dataset since there was not a lot that could have been done with the data set. I tired to learn on how to do a pie chart, on the gender but I could not get the labels on the right quadrant. In the end I choose to be a bar plot to show the 20 best 90's rap artist. I am still going to need more practice with other types of plots. Hopefully the next tidy tuesday I can practice again. 
+```{r }
+rankings %>%
+  select(year, artist, points, gender) %>%
+  group_by(gender) %>%
+  count() %>%
+  ungroup() %>%
+  mutate(percent= n/311*100) %>%
+  mutate(percantage = round(percent, 0))-> new_ranking
+
+new_ranking %>%
+  ggplot(aes(x=percantage, y=gender, fill=gender)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0)+
+  theme_minimal() +
+  labs(x="", y="", title = "The percentage of Rap Arist based on gender")+
+  geom_text(x=50, aes(y = gender, label = percantage), color = "black", size=6) + 
+  theme(legend.position = "none") -> gender_plot
+
+print(gender_plot)
+
+ggsave("gender_plot.png", gender_plot)
+```
+
+
+
+This week tidy tuesday is working with the data set of the Best Rap artist. It was not my favotite dataset since there was not a lot that could have been done with the data set. The first plot is about the 20 best rap artist in the 90s. The second plot is a pie chart showing the percentage of rap arist based on gender. It was hard to figure out the pie chart. It is a good chart to show the huge gender rap in rap music. 
