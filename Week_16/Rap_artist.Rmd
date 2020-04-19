@@ -13,8 +13,8 @@ library(tidyverse)
 library(ggrepel)
 
 
-color_choice1 = "blue"
-color_choice2= "orange"
+color_choice1 = "darkslategray4"
+color_choice2= "indianred1"
 color_choice3 = "yellow"
 ```
 
@@ -63,6 +63,7 @@ new_ranking %>%
   theme_minimal() +
   labs(x="", y="", title = "The percentage of Rap Arist based on gender")+
   geom_text(x=50, aes(y = gender, label = percantage), color = "black", size=6) + 
+  scale_fill_manual(values = c(color_choice2, color_choice1, color_choice3))+
   theme(legend.position = "none") -> gender_plot
 
 print(gender_plot)
