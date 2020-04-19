@@ -15,8 +15,32 @@ library(tidyverse)
 
 
 ```{r }
-polls <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-14/polls.csv')
 
 rankings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-14/rankings.csv')
 
 ```
+
+
+
+```{r }
+rankings %>%
+  select(points, gender, year, artist) %>%
+  filter(year %in% c("1990", "1991", "1992","1993",
+                     "1994","1995", "1996", "1997", 
+                     "1998","1999")) %>%
+  slice(year, 1:20)->new_rankings
+
+```
+
+
+```{r }
+new_rankings %>%
+  ggplot(aes(x=artist, y=points, fill=gender)) +
+  geom_bar(stat="identity") +
+  coord_flip()+
+  labs(x="Artist", y="Total number of points awarded", title = "The 20 best 90's rap artist")+
+  scale_fill_manual(values = c("red", "blue","green"))+
+  theme_classic()
+  
+```
+
