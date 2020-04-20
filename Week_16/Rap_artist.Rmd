@@ -47,28 +47,7 @@ print(top_20_plot)
 ggsave("top_20_plot.png", top_20_plot)
 ```
 
-```{r }
-rankings %>%
-  select(year, artist, points, gender) %>%
-  group_by(gender) %>%
-  count() %>%
-  ungroup() %>%
-  mutate(percent= n/311*100) %>%
-  mutate(percantage = round(percent, 0))-> new_ranking
 
-new_ranking %>%
-  ggplot(aes(x=percantage, y=gender, fill=gender)) +
-  geom_bar(stat="identity", width=1) +
-  coord_polar("y", start=0)+
-  theme_minimal() +
-  labs(x="", y="", title = "The percentage of Rap Arist based on gender")+
-  geom_text(x=50, aes(y = gender, label = percantage), color = "black", size=6) + 
-  scale_fill_manual(values = c(color_choice2, color_choice1, color_choice3))+
-  theme(legend.position = "none") -> gender_plot
-
-print(gender_plot)
-
-ggsave("gender_plot.png", gender_plot)
 ```
 
 
